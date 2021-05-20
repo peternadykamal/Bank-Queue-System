@@ -28,7 +28,8 @@ public class Main extends Application {
         SavingsAccount account = new SavingsAccount(500);
         System.out.println(account.getBalance());
         System.out.println(account.isPenaltyUnderMin());
-        System.out.println(account.withdraw(50));
+        System.out.println(account.withdraw(500));
+        System.out.println(account.getBalance());
 
         account.deposit(500);
         System.out.println(account.getBalance());
@@ -39,12 +40,17 @@ public class Main extends Application {
         System.out.println(account.isPenaltyUnderMin());
 
         account.deposit(1500);
+        System.out.println(account.getBalance());
         System.out.println(account.isPenaltyUnderMin());
-
         TimeUnit.MINUTES.sleep(6);
         System.out.println(account.getBalance());
+
         for (int i=0;i<7;i++){
             System.out.println(account.withdraw(50));
+        }
+        TimeUnit.MINUTES.sleep(4);
+        for (int i=0;i<7;i++){
+            System.out.println(account.withdraw(500));
         }
         System.out.println(account.getBalance());
         //launch(args);

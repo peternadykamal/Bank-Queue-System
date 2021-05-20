@@ -43,7 +43,7 @@ public class SavingsAccount extends Account implements IAccount{
         }
 
         double balance = getBalance();
-        if(balance >= amount && withdrawTimesInThisMonths < withdrawTimesLimit && penaltyUnderMin == false){
+        if(balance >= amount && withdrawTimesInThisMonths < withdrawTimesLimit){
             AccountOperation operation = new AccountOperation(amount,operationType.withdraw);
             this.accountHistory.add(operation);
             setBalance(balance-amount);
