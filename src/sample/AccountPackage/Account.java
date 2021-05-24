@@ -1,5 +1,7 @@
 package sample.AccountPackage;
 
+import sample.Main;
+
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ public abstract class Account {
     protected boolean penaltyUnderMin=true;
     protected double  interestRate;
     private LocalDateTime lastAddedInterest;
-    private double forEvery = 3.0; //add interest for every 3 min.
+    //private double forEvery = 3.0; //add interest for every 3 min.
 
     public int getAccountId() {
         return accountId;
@@ -42,25 +44,24 @@ public abstract class Account {
     }
 
     public Account(){
-        lastAddedInterest = LocalDateTime.now();
+        lastAddedInterest = Main.now();
     }
 
     private void addInterest(){
-//        long diff = ChronoUnit.MONTHS.between(lastAddedInterest.withDayOfMonth(1), LocalDateTime.now().withDayOfMonth(1));
-//        to get the difference between two dates in months
-//        int N = (int) Math.floor(diff);
-//        if (N>0){
-//            balance = balance*Math.pow((1+interestRate),N);
-//            lastAddedInterest = lastAddedInterest.plusMonths(N);
-//        }
-
-
-        long diff = ChronoUnit.MINUTES.between(lastAddedInterest, LocalDateTime.now());
-        //get the difference between two dates
-        int N = (int) Math.floor(diff/forEvery);
+        long diff = ChronoUnit.MONTHS.between(lastAddedInterest.withDayOfMonth(1), Main.now().withDayOfMonth(1));
+        //to get the difference between two dates in months
+        int N = (int) Math.floor(diff);
         if (N>0){
             if(penaltyUnderMin == false && accountState == true) balance = balance*Math.pow((1+interestRate),N);
-            lastAddedInterest = lastAddedInterest.plusMinutes((long) (N*forEvery));
+            lastAddedInterest = lastAddedInterest.plusMonths(N);
         }
+
+//        long diff = ChronoUnit.MINUTES.between(lastAddedInterest, Main.now());
+//        //get the difference between two dates
+//        int N = (int) Math.floor(diff/forEvery);
+//        if (N>0){
+//            if(penaltyUnderMin == false && accountState == true) balance = balance*Math.pow((1+interestRate),N);
+//            lastAddedInterest = lastAddedInterest.plusMinutes((long) (N*forEvery));
+//        }
     }
 }

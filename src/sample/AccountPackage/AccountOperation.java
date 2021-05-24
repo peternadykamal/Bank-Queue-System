@@ -1,5 +1,7 @@
 package sample.AccountPackage;
 
+import sample.Main;
+
 import java.time.LocalDateTime;
 
 public class AccountOperation {
@@ -22,7 +24,7 @@ public class AccountOperation {
 
     public AccountOperation(double amount, operationType type){
         this.type = type.toString();
-        date = LocalDateTime.now();
+        date = Main.now();
         this.amount = amount;
     }
 }
