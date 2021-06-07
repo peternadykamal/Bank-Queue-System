@@ -7,13 +7,13 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public abstract class Account {
-    protected int accountId;
-    protected ArrayList<AccountOperation> accountHistory = new ArrayList<>();
+    public int accountId;
+    //protected ArrayList<AccountOperation> accountHistory = new ArrayList<>();
     private double balance;
     protected int minBalance;
-    public boolean accountState = true;
+    public boolean accountState;
     //accountState = false in all accounts when one of accounts have penaltyUnderMin
-    protected boolean penaltyUnderMin=true;
+    protected boolean penaltyUnderMin;
     protected double  interestRate;
     private LocalDateTime lastAddedInterest;
     //private double forEvery = 3.0; //add interest for every 3 min.
@@ -21,9 +21,9 @@ public abstract class Account {
     public int getAccountId() {
         return accountId;
     }
-    public ArrayList<AccountOperation> getAccountHistory() {
-        return accountHistory;
-    }
+//    public ArrayList<AccountOperation> getAccountHistory() {
+//        return accountHistory;
+//    }
     public int getMinBalance() {
         return minBalance;
     }
@@ -33,10 +33,15 @@ public abstract class Account {
     public double getInterestRate() {
         return interestRate;
     }
+    public LocalDateTime getLastAddedInterest() {
+        return lastAddedInterest;
+    }
     public double getBalance() {
         addInterest();
         return balance;
     }
+
+
     protected void setBalance(double balance) {
         this.balance = balance;
         if (getBalance() >= minBalance) penaltyUnderMin=false;
@@ -44,7 +49,16 @@ public abstract class Account {
     }
 
     public Account(){
+        accountState = true;
+        penaltyUnderMin=true;
         lastAddedInterest = Main.now();
+    }
+
+    public Account(int accountId, boolean accountState, boolean penaltyUnderMin, LocalDateTime lastAddedInterest) {
+        this.accountId = accountId;
+        this.accountState = accountState;
+        this.penaltyUnderMin = penaltyUnderMin;
+        this.lastAddedInterest = lastAddedInterest;
     }
 
     private void addInterest(){
@@ -55,7 +69,6 @@ public abstract class Account {
             if(penaltyUnderMin == false && accountState == true) balance = balance*Math.pow((1+interestRate),N);
             lastAddedInterest = lastAddedInterest.plusMonths(N);
         }
-
 //        long diff = ChronoUnit.MINUTES.between(lastAddedInterest, Main.now());
 //        //get the difference between two dates
 //        int N = (int) Math.floor(diff/forEvery);
@@ -64,4 +77,6 @@ public abstract class Account {
 //            lastAddedInterest = lastAddedInterest.plusMinutes((long) (N*forEvery));
 //        }
     }
+
+    public abstract String[] getProperties();
 }
