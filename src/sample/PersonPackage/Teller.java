@@ -38,6 +38,7 @@ public class Teller extends Person{
         if(client != null){
             if(client.checkPassword(password)){
                 selectedClint = client;
+                client.checkClintPrivileges();
                 return true;
             }
             else return false;
@@ -64,6 +65,7 @@ public class Teller extends Person{
         }
         return 0;
     }
+
 
     @Override
     public String[] getProperties() {

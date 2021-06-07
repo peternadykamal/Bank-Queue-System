@@ -55,7 +55,50 @@ public class Client extends Person{
         }
         return flag;
     }
-
+    public boolean checkClintPrivileges(){
+        //if return value is true then there is no account under min
+        boolean flag = true;
+        if(checkLoansState() == false) flag = false;
+        for (Account account : accounts) {
+            if(account.isPenaltyUnderMin() == true){
+                flag = false;
+                break;
+            }
+        }
+        if(flag==false){
+            for (Account account : accounts) {
+                account.accountState = false;
+            }
+        }
+        else if(flag==true){
+            for (Account account : accounts) {
+                account.accountState = true;
+            }
+        }
+        return flag;
+    }
+    public boolean checkLoansState(){
+        boolean flag = true;
+        for (Loan loan : loans) {
+            if (loan.checkPenalty() == true) {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }
+    public Account getAccount(int accountID){
+        for (Account account : accounts) {
+            if (account.accountId == accountID) return account;
+        }
+        return null;
+    }
+    public Loan getLoan(int loanID){
+        for (Loan loan : loans) {
+            if(loan.loanID == loanID) return loan;
+        }
+        return null;
+    }
     public String[] getProperties(){
         String[] array = {firstName,lastName,
                 phoneNumber,address,
