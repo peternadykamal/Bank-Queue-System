@@ -38,7 +38,11 @@ public abstract class Account {
     protected void setBalance(double balance) {
         this.balance = balance;
         if (getBalance() >= minBalance) penaltyUnderMin=false;
-        else penaltyUnderMin=true;
+        else
+        {
+            penaltyUnderMin=true;
+            //accountState= false;
+        }
     }
 
     public Account(){
