@@ -3,16 +3,16 @@ package sample.AccountPackage;
 import sample.Main;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class SavingsAccount extends Account implements IAccount{
 
     private static final int withdrawTimesLimit = 6;
     private int withdrawTimesInThisMonths;
-    private int currentMonthNumber = Main.now().getMonthValue();
+    private int currentMonthNumber;
     //private static final int interval = 3;
     //minutes period check instead each month check
-    private LocalDateTime timeToResetWithdrawTimes;
 
     public int getWithdrawTimesLimit() {
         return withdrawTimesLimit;
@@ -26,8 +26,18 @@ public class SavingsAccount extends Account implements IAccount{
         minBalance = 1500;
         interestRate = 4/100.0;
         withdrawTimesInThisMonths = 0;
-        timeToResetWithdrawTimes = Main.now().plusMonths(1);
+        currentMonthNumber = Main.now().getMonthValue();
         deposit(balance);
+    }
+
+    public SavingsAccount(int accountId, double balance, boolean accountState, boolean penaltyUnderMin, LocalDateTime lastAddedInterest,
+                          int withdrawTimesInThisMonths, int currentMonthNumber) {
+        super(accountId, accountState, penaltyUnderMin, lastAddedInterest);
+        this.withdrawTimesInThisMonths = withdrawTimesInThisMonths;
+        this.currentMonthNumber = currentMonthNumber;
+        minBalance = 1500;
+        interestRate = 4/100.0;
+        setBalance(balance);
     }
 
     @Override
@@ -46,8 +56,8 @@ public class SavingsAccount extends Account implements IAccount{
 
         double balance = getBalance();
         if(balance >= amount && withdrawTimesInThisMonths < withdrawTimesLimit){
-            AccountOperation operation = new AccountOperation(amount,operationType.withdraw);
-            this.accountHistory.add(operation);
+//            AccountOperation operation = new AccountOperation(accountId,amount,operationType.withdraw);
+//            this.accountHistory.add(operation);
             setBalance(balance-amount);
             withdrawTimesInThisMonths++;
             return true;
@@ -57,9 +67,19 @@ public class SavingsAccount extends Account implements IAccount{
 
     @Override
     public void deposit(double amount) {
-        AccountOperation operation = new AccountOperation(amount,operationType.deposit);
-        this.accountHistory.add(operation);
+//        AccountOperation operation = new AccountOperation(accountId,amount,operationType.deposit);
+//        this.accountHistory.add(operation);
         double balance = getBalance();
         setBalance(balance+amount);
+    }
+
+    @Override
+    public String[] getProperties() {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String lastAddedInterest= getLastAddedInterest().format(format);
+        String[] array = {String.valueOf(getBalance()), String.valueOf(accountState),
+                String.valueOf(penaltyUnderMin),lastAddedInterest,"Savings",
+                String.valueOf(withdrawTimesInThisMonths), String.valueOf(currentMonthNumber)};
+        return array;
     }
 }

@@ -5,7 +5,7 @@ import sample.Main;
 import java.time.LocalDateTime;
 
 public class AccountOperation {
-
+    private int accountID;
     private LocalDateTime date;
     private double amount;
     private String type;
@@ -22,9 +22,10 @@ public class AccountOperation {
         return type;
     }
 
-    public AccountOperation(double amount, operationType type){
+    public AccountOperation(int accountID,double amount, operationType type){
         this.type = type.toString();
         date = Main.now();
         this.amount = amount;
+        this.accountID = accountID;
     }
 }
